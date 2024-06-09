@@ -24,9 +24,13 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(st, str)
         self.assertEqual(out, st)
 
-    def save(self):
+    def test_save(self):
         """Method to test BaseModel's save method"""
-        pass
+        b = BaseModel()
+        b.save()
+        val1 = datetime.now()
+        self.assertIsInstance(b.updated_at, datetime)
+        self.asseertEqual(b.updated_at, val1)
 
     def test_to_dict(self):
         """Method to test BaseModel's to_dict method"""

@@ -16,8 +16,16 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Constructor method"""
-        self.id = str(uuid4())
-        self.date_converter(1)
+        if args:
+            pass
+        elif kwargs and kwargs != {}:
+            for key in kwargs.keys():
+                if key == '__class__':
+                    continue
+                # elif key == 'updated_at' or key == 'created_at':
+        else:
+            self.id = str(uuid4())
+            self.date_converter(1)
 
     # =========================== Str ================================
 

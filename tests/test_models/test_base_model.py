@@ -16,6 +16,15 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(b.created_at, datetime)
         self.assertIsInstance(b.updated_at, datetime)
 
+    def test_kwargs(self):
+        """Method to test creation of BaseModel instance using kwargs"""
+        b1 = BaseModel()
+        dic = b1.to_dict()
+        b2 = BaseModel(**dic)
+        self.assertIsInstance(b2, BaseModel)
+        self.assertIsInstance(b2.updated_at, datetime)
+        self.assertIsInstance(b2.created_at, datetime)
+
     def test_str(self):
         """Method to test BaseModel's str method"""
         b = BaseModel()
@@ -30,7 +39,7 @@ class TestBaseModel(unittest.TestCase):
         b.save()
         val1 = datetime.now()
         self.assertIsInstance(b.updated_at, datetime)
-        self.asseertEqual(b.updated_at, val1)
+        self.assertEqual(b.updated_at, val1)
 
     def test_to_dict(self):
         """Method to test BaseModel's to_dict method"""

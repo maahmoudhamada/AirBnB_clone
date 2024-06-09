@@ -9,10 +9,17 @@ from datetime import datetime
 class BaseModel:
     """BaseModel Class"""
 
-    def date_converter(self, flag):
+    # =========================== Date_converter ======================
+
+    def date_converter(self, flag, key="", value=""):
+        """Method to convert date from to isoformat"""
         if flag == 1:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+        else:
+            setattr(self, key, datetime.fromisoformat(value))
+
+    # =========================== Init ================================
 
     def __init__(self, *args, **kwargs):
         """Constructor method"""
@@ -22,7 +29,11 @@ class BaseModel:
             for key in kwargs.keys():
                 if key == '__class__':
                     continue
-                # elif key == 'updated_at' or key == 'created_at':
+                elif key == 'updated_at' or key == 'created_at':
+                    self.date_converter(2, key, kwargs[key])
+                else:
+                    setattr(self, key, kwargs[key])
+
         else:
             self.id = str(uuid4())
             self.date_converter(1)

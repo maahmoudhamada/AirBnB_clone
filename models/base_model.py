@@ -9,11 +9,15 @@ from datetime import datetime
 class BaseModel:
     """BaseModel Class"""
 
-    def __init__(self):
+    def date_converter(self, flag):
+        if flag == 1:
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+
+    def __init__(self, *args, **kwargs):
         """Constructor method"""
         self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        self.date_converter(1)
 
     # =========================== Str ================================
 

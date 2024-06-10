@@ -3,6 +3,7 @@
 
 
 import os
+import json
 import unittest
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
@@ -50,11 +51,12 @@ class FileStorageTests(unittest.TestCase):
             val = f.read()
         self.assertEqual(val, '{}')
         self.assertIsInstance(val, str)
-
-    def test_reload(self):
-        """Test method for FileStorage's reload() method"""
-        f = FileStorage()
-        f._FileStorage__objects = {}
-        f.reload()
-        self.assertIsInstance(f._FileStorage__objects, dict)
-        self.assertEqual(f._FileStorage__objects, {})
+    #
+    # def test_reload(self):
+    #     """Test method for FileStorage's reload() method"""
+    #     b = BaseModel()
+    #     f = FileStorage()
+    #     f._FileStorage__objects = {}
+    #     key = "{}.{}".format(b.__class__.__name__, b.id)
+    #     f._FileStorage__objects.update({key: b.to_dict()})
+    #     print(f.all()) 

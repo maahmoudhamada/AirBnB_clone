@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """Test module fro BaseModel class"""
 
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from datetime import datetime
+from models import storage
 import unittest
-
+import os
 
 class TestBaseModel(unittest.TestCase):
     """Class to test BaseModel class"""
@@ -40,6 +42,9 @@ class TestBaseModel(unittest.TestCase):
         val1 = datetime.now()
         self.assertIsInstance(b.updated_at, datetime)
         self.assertEqual(b.updated_at, val1)
+        key = "{}.{}".format(b.__class__.__name__, b.id)
+        objs = storage.all()
+        self.assertIn(key, objs)
 
     def test_to_dict(self):
         """Method to test BaseModel's to_dict method"""
@@ -48,3 +53,10 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(dic, dict)
         self.assertIsInstance(dic['updated_at'], str)
         self.assertIsInstance(dic['created_at'], str)
+
+    def test_new(self):
+        """Method to test new method"""
+        b = BaseModel()
+        key = "{}.{}".format(b.__class__.__name__, b.id)
+        dic = storage.all()
+        self.assertIn(key, dic)

@@ -4,6 +4,7 @@
 
 from uuid import uuid4
 from datetime import datetime
+from models import storage
 
 
 class BaseModel:
@@ -37,6 +38,7 @@ class BaseModel:
         else:
             self.id = str(uuid4())
             self.date_converter(1)
+            storage.new(self)
 
     # =========================== Str ================================
 
@@ -50,6 +52,7 @@ class BaseModel:
     def save(self):
         """Method to update updated_at attribute"""
         self.updated_at = datetime.now()
+        storage.save()
 
     # =========================== to_dict ===========================
 

@@ -51,12 +51,12 @@ class FileStorageTests(unittest.TestCase):
             val = f.read()
         self.assertEqual(val, '{}')
         self.assertIsInstance(val, str)
-    #
-    # def test_reload(self):
-    #     """Test method for FileStorage's reload() method"""
-    #     b = BaseModel()
-    #     f = FileStorage()
-    #     f._FileStorage__objects = {}
-    #     key = "{}.{}".format(b.__class__.__name__, b.id)
-    #     f._FileStorage__objects.update({key: b.to_dict()})
-    #     print(f.all()) 
+
+    def test_reload(self):
+        """Test method for FileStorage's reload() method"""
+        f = FileStorage()
+        b = BaseModel()
+        b.save()
+        f.reload()
+        key = "{}.{}".format(b.__class__.__name__, b.id)
+        self.assertIn(key, f._FileStorage__objects)

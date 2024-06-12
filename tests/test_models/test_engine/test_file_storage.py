@@ -60,3 +60,6 @@ class FileStorageTests(unittest.TestCase):
         f.reload()
         key = "{}.{}".format(b.__class__.__name__, b.id)
         self.assertIn(key, f._FileStorage__objects)
+
+        with self.assertRaises(TypeError):
+            f.reload('test')

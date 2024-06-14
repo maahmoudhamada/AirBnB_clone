@@ -8,6 +8,7 @@ from models import storage
 import unittest
 import os
 
+
 class TestBaseModel(unittest.TestCase):
     """Class to test BaseModel class"""
 

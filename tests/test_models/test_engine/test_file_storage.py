@@ -65,7 +65,7 @@ class FileStorageTests(unittest.TestCase):
         self.s.new(b)
         self.s.save()
 
-        self.s._FileStorage__objects = {}  
+        self.s._FileStorage__objects = {}
         self.s.reload()
         key = "{}.{}".format(b.__class__.__name__, b.id)
         self.assertIn(key, self.s.all())

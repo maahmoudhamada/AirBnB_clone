@@ -23,7 +23,19 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, line):
+        classess = ['BaseModel']
+        if not line:
+            print("** class name missing **")
+        elif line not in classess:
+            print("** class doesn't exist **")
+        else:
+            b = BaseModel()
+            b.save()
+            print(b.id)
+
+    def do_show(self, line):
         pass
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

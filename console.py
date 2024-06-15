@@ -34,7 +34,9 @@ class HBNBCommand(cmd.Cmd):
             print(b.id)
 
     def do_show(self, line):
-        pass
+        tmp = line.split()
+        dic = {'class': None, 'id': None}
+        
 
 
 if __name__ == '__main__':

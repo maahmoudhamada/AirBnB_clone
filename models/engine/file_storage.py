@@ -10,6 +10,21 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    def classSelector(self, inst, flag):
+        from models.base_model import BaseModel
+        from models.user import User
+        classess = [BaseModel, User]
+        if flag == 1:
+            if type(inst) in classess:
+                for cl in classess:
+                    if type(inst) is cl:
+                        return cl
+        else:
+            for cl in classess:
+                if inst['__class__'] == cl.__name__:
+                    return cl
+        return None
+
     def instance_converter(self, flag):
         """Method to convert instance to dict, vise verca"""
         from models.base_model import BaseModel
@@ -17,18 +32,19 @@ class FileStorage:
 
         if flag == 1:
             for key in new_dict.keys():
-                if isinstance(new_dict[key], BaseModel):
+                cl = self.classSelector(new_dict[key], 1)
+                if isinstance(new_dict[key], cl):
                     new_dict.update({key: new_dict[key].to_dict()})
             return new_dict
         else:
             for key in new_dict.keys():
+                cl = self.classSelector(new_dict[key], 2)
                 if isinstance(new_dict[key], dict):
-                    new_dict.update({key: BaseModel(**new_dict[key])})
+                    new_dict.update({key: cl(**new_dict[key])})
             self.__objects = new_dict.copy()
 
     def all(self):
         """Method to return dict containing all objects created"""
-        """Method to return all saved objcs"""
         return self.__objects
 
     def new(self, obj):

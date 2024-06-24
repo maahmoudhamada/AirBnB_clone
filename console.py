@@ -2,6 +2,7 @@
 """The console module"""
 
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 import cmd
 import re
@@ -10,7 +11,7 @@ import re
 class HBNBCommand(cmd.Cmd):
     """Console cmd class"""
     prompt = "(hbnb) "
-    classess = ['BaseModel']
+    classess = ['BaseModel', 'User']
 
     def do_quit(self, line):
         """Exiting cmd loop"""
@@ -24,6 +25,8 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Not exectuing anything"""
         pass
+
+# ======================================================
 
     def argsChecker(self, line, flag):
         tmp = line.split()
@@ -47,34 +50,51 @@ class HBNBCommand(cmd.Cmd):
                 if key not in objs:
                     return "** no instance found **"
 
+# ======================================================
+
+    def classSelector(self, inst):
+        classess = [BaseModel, User]
+        for _cls in classess:
+            if inst == _cls.__name__:
+                return _cls
+        return None
+
+# ======================================================
+
     def do_create(self, line):
-        tmp = self.argsChecker(line, 1)
-        if tmp:
-            print(tmp)
+        errorMssg = self.argsChecker(line, 1)
+        if errorMssg:
+            print(errorMssg)
         else:
-            b = BaseModel()
-            b.save()
-            print(b.id)
+            args = line.split()
+            _cls = self.classSelector(args[0])
+            inst = _cls()
+            inst.save()
+            print(inst.id)
+
+    # ======================================================
 
     def do_show(self, line):
         """Method to show instances"""
-        tmp = self.argsChecker(line, 0)
-        if tmp:
-            print(tmp)
+        errorMssg = self.argsChecker(line, 0)
+        if errorMssg:
+            print(errorMssg)
         else:
-            tmp = line.split()
-            key = "{}.{}".format(tmp[0], tmp[1])
+            args = line.split()
+            key = "{}.{}".format(args[0], args[1])
             objs = storage.all()
             print(objs[key])
 
+    # ======================================================
+
     def do_destroy(self, line):
         """Method to delete (destroy) an instance"""
-        tmp = self.argsChecker(line, 0)
-        if tmp:
-            print(tmp)
+        errorMssg = self.argsChecker(line, 0)
+        if errorMssg:
+            print(errorMssg)
         else:
-            tmp = line.split()
-            key = "{}.{}".format(tmp[0], tmp[1])
+            args = line.split()
+            key = "{}.{}".format(args[0], args[1])
             storage.all().pop(key)
             storage.save()
 
@@ -87,36 +107,36 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             print(lst)
         else:
-            tmp = line.split()
-            _class = None
+            args = line.split()
+            _cls = None
             try:
-                _class = tmp[0]
+                _cls = args[0]
             except IndexError:
                 pass
 
-            if _class and _class in self.classess:
+            if _cls and _cls in self.classess:
                 print(lst)
             else:
                 print("** class doesn't exist **")
 
     def do_update(self, line):
-        tmp = self.argsChecker(line, 0)
-        if tmp:
-            print(tmp)
+        errorMssg = self.argsChecker(line, 0)
+        if errorMssg:
+            print(errorMssg)
         else:
             attrMsg = self.attrChecker(line)
             if attrMsg:
                 print("{}".format(attrMsg))
             else:
-                tmp = line.split()
+                args = line.split()
                 objs = storage.all()
-                key = "{}.{}".format(tmp[0], tmp[1])
+                key = "{}.{}".format(args[0], args[1])
                 if key in objs:
                     ins = objs[key]
-                cast = self.valueCasting(tmp[3])
+                cast = self.valueCasting(args[3])
                 if isinstance(cast, str):
                     cast = cast.strip('"')
-                setattr(ins, tmp[2], cast)
+                setattr(ins, args[2], cast)
                 ins.save()
 
     def valueCasting(self, attrValue):
@@ -134,12 +154,12 @@ class HBNBCommand(cmd.Cmd):
         return typeargsCheckers[count](attrValue)
 
     def attrChecker(self, line):
-        tmp = line.split()
+        args = line.split()
         attrName = None
         attrValue = None
         try:
-            attrName = tmp[2]
-            attrValue = tmp[3]
+            attrName = args[2]
+            attrValue = args[3]
         except IndexError:
             pass
         if attrName is None:

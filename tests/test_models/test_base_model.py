@@ -42,7 +42,7 @@ class TestBaseModel(unittest.TestCase):
         b.save()
         val1 = datetime.now()
         self.assertIsInstance(b.updated_at, datetime)
-        # self.assertEqual(b.updated_at, val1)
+        self.assertEqual(b.updated_at, val1)
         key = "{}.{}".format(b.__class__.__name__, b.id)
         objs = storage.all()
         self.assertIn(key, objs)

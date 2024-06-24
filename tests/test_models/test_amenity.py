@@ -13,10 +13,14 @@ class AmenityClassTest(unittest.TestCase):
         """Setup Method"""
         self.a = Amenity()
 
+    # =======================================================
+
     def test_initialization(self):
         """Method to test Amenity's class initialize"""
         self.assertIsInstance(self.a, Amenity)
         self.assertTrue(issubclass(type(self.a), BaseModel))
+
+    # =======================================================
 
     def test_class_attributes(self):
         """Method to test Amenity's class attributes"""

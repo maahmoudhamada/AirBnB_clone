@@ -2,6 +2,11 @@
 """The console module"""
 
 from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.review import Review
 from models.user import User
 from models import storage
 import cmd
@@ -11,7 +16,8 @@ import re
 class HBNBCommand(cmd.Cmd):
     """Console cmd class"""
     prompt = "(hbnb) "
-    classess = ['BaseModel', 'User']
+    classess =\
+        ['BaseModel', 'User', 'Amenity', 'Place', 'State', 'City', 'Review']
 
     def do_quit(self, line):
         """Exiting cmd loop"""
@@ -29,12 +35,13 @@ class HBNBCommand(cmd.Cmd):
 # ======================================================
 
     def argsChecker(self, line, flag):
-        tmp = line.split()
-        _class = None
+        """Method to check arguments existense"""
+        args = line.split()
+        _cls = None
         id = None
         try:
-            _class = tmp[0]
-            id = tmp[1]
+            _class = args[0]
+            id = args[1]
         except IndexError:
             pass
         if not line:
@@ -45,7 +52,7 @@ class HBNBCommand(cmd.Cmd):
             if not id:
                 return "** instance id missing **"
             else:
-                key = "{}.{}".format(_class, id)
+                key = "{}.{}".format(_cls, id)
                 objs = storage.all()
                 if key not in objs:
                     return "** no instance found **"
@@ -53,7 +60,8 @@ class HBNBCommand(cmd.Cmd):
 # ======================================================
 
     def classSelector(self, inst):
-        classess = [BaseModel, User]
+        """Method to select the correct class"""
+        classess = [BaseModel, User, Amenity, City, State, Review, Place]
         for _cls in classess:
             if inst == _cls.__name__:
                 return _cls
@@ -62,6 +70,7 @@ class HBNBCommand(cmd.Cmd):
 # ======================================================
 
     def do_create(self, line):
+        """Method to create model's instances"""
         errorMssg = self.argsChecker(line, 1)
         if errorMssg:
             print(errorMssg)
@@ -120,6 +129,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
     def do_update(self, line):
+        """Method to update instances"""
         errorMssg = self.argsChecker(line, 0)
         if errorMssg:
             print(errorMssg)
@@ -140,6 +150,7 @@ class HBNBCommand(cmd.Cmd):
                 ins.save()
 
     def valueCasting(self, attrValue):
+        """Method to cast attributes value based on its type"""
         intPattern = r'^-?[0-9]+$'
         floatPattern = r'^-?[0-9]*\.[0-9]+$'
         stringPattern = r'^.*$'
@@ -154,6 +165,7 @@ class HBNBCommand(cmd.Cmd):
         return typeargsCheckers[count](attrValue)
 
     def attrChecker(self, line):
+        """Method to check attribute's name and value"""
         args = line.split()
         attrName = None
         attrValue = None

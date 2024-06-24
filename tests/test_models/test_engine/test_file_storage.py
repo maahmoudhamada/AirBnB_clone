@@ -21,6 +21,8 @@ class FileStorageTests(unittest.TestCase):
         except FileNotFoundError:
             pass
 
+    # =======================================================
+
     def tearDown(self):
         """Clean up after tests"""
         try:
@@ -28,15 +30,21 @@ class FileStorageTests(unittest.TestCase):
         except FileNotFoundError:
             pass
 
+    # =======================================================
+
     def test_attributes(self):
         """Test method for class attributes"""
         self.assertIsInstance(self.s._FileStorage__file_path, str)
         self.assertIsInstance(self.s._FileStorage__objects, dict)
 
+    # =======================================================
+
     def test_all(self):
         """Test method for FileStorage's all() method"""
         self.assertIsInstance(self.s.all(), dict)
         self.assertEqual(self.s.all(), {})
+
+    # =======================================================
 
     def test_new(self):
         """Test method for FileStorage's new() method"""
@@ -46,6 +54,8 @@ class FileStorageTests(unittest.TestCase):
         self.assertIsInstance(self.s.all()[key], BaseModel)
         self.assertEqual(self.s.all()[key], b)
         self.assertIn(key, self.s.all())
+
+    # =======================================================
 
     def test_save(self):
         """Test method for FileStorage's save() method"""
@@ -58,6 +68,8 @@ class FileStorageTests(unittest.TestCase):
         self.assertIn(key, val)
         self.assertEqual(val[key]["__class__"], "BaseModel")
         self.assertEqual(val[key]["id"], b.id)
+
+    # =======================================================
 
     def test_reload(self):
         """Test method for FileStorage's reload() method"""

@@ -13,10 +13,14 @@ class ReviewClassTest(unittest.TestCase):
         """Setup Method"""
         self.r = Review()
 
+    # =======================================================
+
     def test_initialization(self):
         """Method to test Review's class initialize"""
         self.assertIsInstance(self.r, Review)
         self.assertTrue(issubclass(type(self.r), BaseModel))
+
+    # =======================================================
 
     def test_class_attributes(self):
         """Method to test Review's class attributes"""

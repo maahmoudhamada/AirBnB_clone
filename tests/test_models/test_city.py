@@ -13,10 +13,14 @@ class CityClassTest(unittest.TestCase):
         """Setup Method"""
         self.c = City()
 
+    # =======================================================
+
     def test_initialization(self):
         """Method to test City's class initialize"""
         self.assertIsInstance(self.c, City)
         self.assertTrue(issubclass(type(self.c), BaseModel))
+
+    # =======================================================
 
     def test_class_attributes(self):
         """Method to test City's class attributes"""
@@ -24,6 +28,9 @@ class CityClassTest(unittest.TestCase):
         self.assertEqual(self.c.state_id, "")
         self.c.state_id = "123"
         self.assertEqual(self.c.state_id, "123")
+
+        # --------------------------------------------
+
         self.assertIsInstance(self.c.name, str)
         self.assertEqual(self.c.name, "")
         self.c.name = 'ALX'

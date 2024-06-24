@@ -13,10 +13,14 @@ class StateClassTest(unittest.TestCase):
         """Setup Method"""
         self.s = State()
 
+    # =======================================================
+
     def test_initialization(self):
         """Method to test State's class initialize"""
         self.assertIsInstance(self.s, State)
         self.assertTrue(issubclass(type(self.s), BaseModel))
+
+    # =======================================================
 
     def test_class_attributes(self):
         """Method to test State's class attributes"""

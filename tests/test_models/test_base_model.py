@@ -19,6 +19,8 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(b.created_at, datetime)
         self.assertIsInstance(b.updated_at, datetime)
 
+    # =======================================================
+
     def test_kwargs(self):
         """Method to test creation of BaseModel instance using kwargs"""
         b1 = BaseModel()
@@ -28,6 +30,8 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(b2.updated_at, datetime)
         self.assertIsInstance(b2.created_at, datetime)
 
+    # =======================================================
+
     def test_str(self):
         """Method to test BaseModel's str method"""
         b = BaseModel()
@@ -36,16 +40,20 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(st, str)
         self.assertEqual(out, st)
 
-    # def test_save(self):
-    #     """Method to test BaseModel's save method"""
-    #     b = BaseModel()
-    #     b.save()
-    #     val1 = datetime.now()
-    #     self.assertIsInstance(b.updated_at, datetime)
-    #     self.assertEqual(b.updated_at, val1)
-    #     key = "{}.{}".format(b.__class__.__name__, b.id)
-    #     objs = storage.all()
-    #     self.assertIn(key, objs)
+    # =======================================================
+
+    def test_save(self):
+        """Method to test BaseModel's save method"""
+        b = BaseModel()
+        b.save()
+        val1 = datetime.now()
+        self.assertIsInstance(b.updated_at, datetime)
+        self.assertEqual(b.updated_at, val1)
+        key = "{}.{}".format(b.__class__.__name__, b.id)
+        objs = storage.all()
+        self.assertIn(key, objs)
+
+    # =======================================================
 
     def test_to_dict(self):
         """Method to test BaseModel's to_dict method"""
@@ -55,9 +63,15 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(dic['updated_at'], str)
         self.assertIsInstance(dic['created_at'], str)
 
+    # =======================================================
+
     def test_new(self):
         """Method to test new method"""
         b = BaseModel()
         key = "{}.{}".format(b.__class__.__name__, b.id)
         dic = storage.all()
         self.assertIn(key, dic)
+
+
+if __name__ == '__main__':
+    unittest.main()

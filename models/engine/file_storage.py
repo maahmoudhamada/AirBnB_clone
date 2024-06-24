@@ -11,36 +11,42 @@ class FileStorage:
     __objects = {}
 
     def classSelector(self, inst, flag):
+        """Method to choose the correct class"""
         from models.base_model import BaseModel
         from models.user import User
-        classess = [BaseModel, User]
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.review import Review
+
+        classess = [BaseModel, User, Amenity, Place, State, City, Review]
         if flag == 1:
             if type(inst) in classess:
-                for cl in classess:
-                    if type(inst) is cl:
-                        return cl
+                for _cls in classess:
+                    if type(inst) is _cls:
+                        return _cls
         else:
-            for cl in classess:
-                if inst['__class__'] == cl.__name__:
-                    return cl
+            for _cls in classess:
+                if inst['__class__'] == _cls.__name__:
+                    return _cls
         return None
 
     def instance_converter(self, flag):
         """Method to convert instance to dict, vise verca"""
-        from models.base_model import BaseModel
         new_dict = self.__objects.copy()
 
         if flag == 1:
             for key in new_dict.keys():
-                cl = self.classSelector(new_dict[key], 1)
-                if isinstance(new_dict[key], cl):
+                _cls = self.classSelector(new_dict[key], 1)
+                if isinstance(new_dict[key], _cls) and _cls:
                     new_dict.update({key: new_dict[key].to_dict()})
             return new_dict
         else:
             for key in new_dict.keys():
-                cl = self.classSelector(new_dict[key], 2)
+                _cls = self.classSelector(new_dict[key], 2)
                 if isinstance(new_dict[key], dict):
-                    new_dict.update({key: cl(**new_dict[key])})
+                    new_dict.update({key: _cls(**new_dict[key])})
             self.__objects = new_dict.copy()
 
     def all(self):

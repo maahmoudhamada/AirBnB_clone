@@ -25,8 +25,30 @@ class HBNBCommand(cmd.Cmd):
         """Not exectuing anything"""
         pass
 
+    def argsChecker(self, line, flag):
+        tmp = line.split()
+        _class = None
+        id = None
+        try:
+            _class = tmp[0]
+            id = tmp[1]
+        except IndexError:
+            pass
+        if not line:
+            return "** class name missing **"
+        elif _class not in self.classess:
+            return "** class doesn't exist **"
+        if flag != 1:
+            if not id:
+                return "** instance id missing **"
+            else:
+                key = "{}.{}".format(_class, id)
+                objs = storage.all()
+                if key not in objs:
+                    return "** no instance found **"
+
     def do_create(self, line):
-        tmp = self.func(line, 1)
+        tmp = self.argsChecker(line, 1)
         if tmp:
             print(tmp)
         else:
@@ -36,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """Method to show instances"""
-        tmp = self.func(line, 0)
+        tmp = self.argsChecker(line, 0)
         if tmp:
             print(tmp)
         else:
@@ -47,7 +69,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Method to delete (destroy) an instance"""
-        tmp = self.func(line, 0)
+        tmp = self.argsChecker(line, 0)
         if tmp:
             print(tmp)
         else:
@@ -77,30 +99,8 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
-    def func(self, line, flag):
-        tmp = line.split()
-        _class = None
-        id = None
-        try:
-            _class = tmp[0]
-            id = tmp[1]
-        except IndexError:
-            pass
-        if not line:
-            return "** class name missing **"
-        elif _class not in self.classess:
-            return "** class doesn't exist **"
-        if flag != 1:
-            if not id:
-                return "** instance id missing **"
-            else:
-                key = "{}.{}".format(_class, id)
-                objs = storage.all()
-                if key not in objs:
-                    return "** no instance found **"
-
     def do_update(self, line):
-        tmp = self.func(line, 0)
+        tmp = self.argsChecker(line, 0)
         if tmp:
             print(tmp)
         else:
@@ -124,14 +124,14 @@ class HBNBCommand(cmd.Cmd):
         floatPattern = r'^-?[0-9]*\.[0-9]+$'
         stringPattern = r'^.*$'
 
-        typeFuncs = {1: int, 2: float, 3: str}
+        typeargsCheckers = {1: int, 2: float, 3: str}
         patterns = [intPattern, floatPattern, stringPattern]
         count = 1
         for pat in patterns:
             if re.match(pat, attrValue) is not None:
                 break
             count = count + 1
-        return typeFuncs[count](attrValue)
+        return typeargsCheckers[count](attrValue)
 
     def attrChecker(self, line):
         tmp = line.split()

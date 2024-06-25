@@ -40,13 +40,13 @@ class HBNBCommand(cmd.Cmd):
         _cls = None
         id = None
         try:
-            _class = args[0]
+            _cls = args[0]
             id = args[1]
         except IndexError:
             pass
         if not line:
             return "** class name missing **"
-        elif _class not in self.classess:
+        elif _cls not in self.classess:
             return "** class doesn't exist **"
         if flag != 1:
             if not id:

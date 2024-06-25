@@ -3,10 +3,11 @@
 
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
-from datetime import datetime
+from datetime import datetime, timedelta
 from models import storage
 import unittest
 import os
+import time
 
 
 class TestBaseModel(unittest.TestCase):
@@ -45,10 +46,12 @@ class TestBaseModel(unittest.TestCase):
     def test_save(self):
         """Method to test BaseModel's save method"""
         b = BaseModel()
+        time.sleep(0.001)
         b.save()
         val1 = datetime.now()
         self.assertIsInstance(b.updated_at, datetime)
-        self.assertEqual(b.updated_at, val1)
+        self.assertGreaterEqual(b.updated_at, val1 - timedelta(milliseconds=1))
+        self.assertLessEqual(b.updated_at, val1 + timedelta(milliseconds=1))
         key = "{}.{}".format(b.__class__.__name__, b.id)
         objs = storage.all()
         self.assertIn(key, objs)
